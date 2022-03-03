@@ -1,6 +1,6 @@
-package com.springboot.springtestx2.pojo;
+package com.springboot.springtestx2.IoC.pojo;
 
-import com.springboot.springtestx2.pojo.defenition.Animal;
+import com.springboot.springtestx2.IoC.pojo.defenition.Animal;
 import org.springframework.stereotype.Component;
 
 @Component

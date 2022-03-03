@@ -1,7 +1,7 @@
-package com.springboot.springtestx2.pojo;
+package com.springboot.springtestx2.IoC.pojo;
 
-import com.springboot.springtestx2.pojo.defenition.Animal;
-import com.springboot.springtestx2.pojo.defenition.Person;
+import com.springboot.springtestx2.IoC.pojo.defenition.Animal;
+import com.springboot.springtestx2.IoC.pojo.defenition.Person;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class BusinessPerson implements Person, BeanNameAware, BeanFactoryAware,
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println("ApplicationContextAware "+ applicationContext.getBean(BusinessPerson.class));
+        System.out.println("ApplicationContextAware "+ applicationContext.getApplicationName());
     }
 
     @Override

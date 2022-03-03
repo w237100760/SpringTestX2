@@ -1,8 +1,8 @@
-package com.springboot.springtestx2;
+package com.springboot.springtestx2.IoC;
 
-import com.springboot.springtestx2.config.AppConfig;
-import com.springboot.springtestx2.pojo.BusinessPerson;
-import com.springboot.springtestx2.pojo.defenition.Person;
+import com.springboot.springtestx2.IoC.config.AppConfig;
+import com.springboot.springtestx2.IoC.pojo.BusinessPerson;
+import com.springboot.springtestx2.IoC.pojo.defenition.Person;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

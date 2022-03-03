@@ -1,4 +1,4 @@
-package com.springboot.springtestx2.pojo.defenition;
+package com.springboot.springtestx2.IoC.pojo.defenition;
 
 public interface Person {
     void service();

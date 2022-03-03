@@ -1,4 +1,4 @@
-package com.springboot.springtestx2.pojo;
+package com.springboot.springtestx2.IoC.pojo;
 
 import lombok.Data;
 

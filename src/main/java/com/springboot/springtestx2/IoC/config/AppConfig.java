@@ -1,9 +1,6 @@
-package com.springboot.springtestx2.config;
+package com.springboot.springtestx2.IoC.config;
 
-import com.springboot.springtestx2.pojo.User;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /* @Configuration -- https://zhuanlan.zhihu.com/p/123194781*/
 //@Configuration
