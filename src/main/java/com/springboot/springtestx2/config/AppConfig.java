@@ -6,12 +6,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /* @Configuration -- https://zhuanlan.zhihu.com/p/123194781*/
-@Configuration
+//@Configuration
 @ComponentScan(basePackages = "com.springboot.springtestx2.*",
-        excludeFilters = {@ComponentScan.Filter(classes = {})})
+        excludeFilters = {@ComponentScan.Filter()})
 public class AppConfig {
-    @Bean
+/*    @Bean
     public User initUser(){
         return new User(1L,"user_name_1","note_1");
-    }
+    }*/
 }
