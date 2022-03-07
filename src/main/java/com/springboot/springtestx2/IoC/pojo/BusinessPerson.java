@@ -37,7 +37,7 @@ public class BusinessPerson implements Person, BeanNameAware, BeanFactoryAware,
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        System.out.println("BeanFactoryAware "+beanFactory.getBean(BusinessPerson.class));
+        System.out.println("BeanFactoryAware ...");
     }
 
     @Override

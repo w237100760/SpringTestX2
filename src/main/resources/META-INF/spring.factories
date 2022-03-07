@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.springboot.springtestx2.Aop.MyAspect
+
+## SpringFactoriesLoader + @EnableAutoConfiguration Read META-INF/spring.factories to Load Spring Bean
