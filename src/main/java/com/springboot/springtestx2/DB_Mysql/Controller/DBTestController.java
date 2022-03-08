@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/DB")
 public class DBTestController {
+    private final UserService userService;
     @Autowired
-    public UserService userService;
+    public DBTestController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/Test")
     public User test(Long id){
