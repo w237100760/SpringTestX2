@@ -7,3 +7,5 @@ import org.springframework.stereotype.Repository;
 public interface MybatiUserDao {
     User getUser(Long id);//方法名与mapper的id保持一致
 }
+
+/*Data Access Object DAO层*/

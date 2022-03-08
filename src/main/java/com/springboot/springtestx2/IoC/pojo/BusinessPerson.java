@@ -26,7 +26,7 @@ public class BusinessPerson implements Person, BeanNameAware, BeanFactoryAware,
     @Override
     @Autowired @Qualifier("animal_Cat")
     public void setAnimal(Animal animal) {
-        System.out.println("LazyInit...");
+        System.out.println("LazyInit..."); //spring 默认不进行延迟初始化
         this.animal = animal;
     }
 
