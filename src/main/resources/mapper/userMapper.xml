@@ -6,4 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getUser" parameterType="long" resultType="user">
         select * from t_user where id = #{id}
     </select>
+
+    <!--parameterType 默认会根据别名类使用 useGeneratedKeys="true" keyProperty="id"会将自增id返回pojo类-->
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user(user_name, sex, note) values (#{userName}, #{sex}, #{note})
+    </insert>
 </mapper>
