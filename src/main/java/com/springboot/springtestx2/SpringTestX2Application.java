@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @MapperScan(basePackages = "com.springboot.springtestx2.DB_Mysql.*",
 annotationClass = Repository.class)
-@SpringBootApplication(scanBasePackages = {"com.springboot.springtestx2.DB_Mysql.*"})
+@SpringBootApplication(scanBasePackages = {"com.springboot.springtestx2.RabbitMq.*"})
 public class SpringTestX2Application {
 
 	public static void main(String[] args) {
