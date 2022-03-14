@@ -3,9 +3,12 @@ package com.springboot.springtestx2.RabbitMq.config;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.scheduling.annotation.Async;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -22,14 +25,14 @@ public class RabbitChannel {
     private int port;
     @Value("${rabbitMq.vHost}")
     private String vHost;
-    /*
-     * autoAck default: false 默认需要收到消费者应答
-     * autoAck = true时 不管消费者是否收到消息
-     * */
-    private static final boolean durable = true;
-    private static final String QUEUE_NAME = "canal.test";
-    private static final String EXCHANGE_NAME = "canal.exchange";
-    private static final String ROUTING_KEY = "canal.exchange.routingKey";
+    @Value("${rabbitMq.queue}")
+    public String QUEUE_NAME;
+    @Value("${rabbitMq.exchange}")
+    private String EXCHANGE_NAME;
+    @Value("${rabbitMq.route}")
+    private String ROUTING_KEY;
+
+    private static final boolean durable = true;//queue durable
     /*
     * 1. direct: a message goes to the queues whose binding key exactly matches the routing key of the message(不同的queue可以设置相同的routeKey)
     * 2. topic
@@ -37,21 +40,23 @@ public class RabbitChannel {
     * 4. fanout: broadcasts all messages to all consumers
     * */
     private static final String EXCHANGE_TYPE = "direct";
+    private static final int prefetch = 1;// accept only one unack-ed message at a time
 
+    @DependsOn("connectionFactory")
     @Bean
-    public Channel consumerChannel() throws IOException, TimeoutException {
-        ConnectionFactory factory = getConnectionFactory();
+    public Channel consumerChannel(@Autowired ConnectionFactory factory) throws IOException, TimeoutException {
         //consumer 应该保持Connection和Channel资源不释放
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
-        channel.basicQos(1);// accept only one unack-ed message at a time
+        channel.basicQos(prefetch);
         channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
         channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
         return channel;
     }
 
-    private ConnectionFactory getConnectionFactory(){
+    @Bean
+    public ConnectionFactory connectionFactory(){
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
         factory.setUsername(username);
