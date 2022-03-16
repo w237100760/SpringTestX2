@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.scheduling.annotation.Async;
-
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -28,19 +26,19 @@ public class RabbitChannel {
     @Value("${rabbitMq.queue}")
     public String QUEUE_NAME;
     @Value("${rabbitMq.exchange}")
-    private String EXCHANGE_NAME;
+    public String EXCHANGE_NAME;
     @Value("${rabbitMq.route}")
-    private String ROUTING_KEY;
+    public String ROUTING_KEY;
 
-    private static final boolean durable = true;//queue durable
+    public static final boolean durable = true;//queue durable
     /*
     * 1. direct: a message goes to the queues whose binding key exactly matches the routing key of the message(不同的queue可以设置相同的routeKey)
-    * 2. topic
+    * 2. topic: https://www.rabbitmq.com/tutorials/tutorial-five-java.html
     * 3. headers
     * 4. fanout: broadcasts all messages to all consumers
     * */
-    private static final String EXCHANGE_TYPE = "direct";
-    private static final int prefetch = 1;// accept only one unack-ed message at a time
+    public static final String EXCHANGE_TYPE = "direct";
+    public static final int prefetch = 1;//consumer accept only one unAck-ed message at a time
 
     @DependsOn("connectionFactory")
     @Bean
@@ -74,6 +72,6 @@ public class RabbitChannel {
  * Durability
  * 1. if the consumer dies, the task isn't lost -- Message acknowledgment (channel.basicAck())
  * 2. if RabbitMQ server stops. -- mark both the queue and messages as durable
- * - queue durable-- channel.queueDeclare() (producer and consumer code 都配置)
+ * - queue durable-- channel.queueDeclare()
  * - messages -- channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
  * */

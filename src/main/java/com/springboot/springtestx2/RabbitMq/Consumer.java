@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsumerInit implements InitializingBean {
+public class Consumer implements InitializingBean {
     /*
      * autoAck default: false 默认需要收到消费者应答
      * autoAck = true时 不管消费者是否收到消息
@@ -21,7 +21,7 @@ public class ConsumerInit implements InitializingBean {
     private final RabbitChannel rabbitChannel;
     private final Channel consumerChannel;
     @Autowired
-    public ConsumerInit(RabbitChannel rabbitChannel, Channel consumerChannel) {
+    public Consumer(RabbitChannel rabbitChannel, Channel consumerChannel) {
         this.rabbitChannel = rabbitChannel;
         this.consumerChannel = consumerChannel;
     }
