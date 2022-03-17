@@ -19,6 +19,7 @@ import java.util.concurrent.TimeoutException;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Component
 public class Publisher {
+    //TODO Channel Pool
     public static Channel channel;
 
     private final RabbitConfig rabbitConfig;
