@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -42,6 +43,13 @@ public class RabbitChannel {
         factory.setVirtualHost(rabbitConfig.V_HOST);
         return factory;
     }
+
+/*    @Scope("prototype")
+    @DependsOn("connectionFactory")
+    @Bean
+    public Channel publisherChannel(@Autowired ConnectionFactory factory){
+
+    }*/
 }
 /*
  * dispatch
@@ -52,5 +60,5 @@ public class RabbitChannel {
  * 1. if the consumer dies, the task isn't lost -- Message acknowledgment (channel.basicAck())
  * 2. if RabbitMQ server stops. -- mark both the queue and messages as durable
  * - queue durable-- channel.queueDeclare()
- * - messages -- channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+ * - messages -- channel.basicPublish("", "", MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
  * */
