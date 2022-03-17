@@ -4,41 +4,20 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+@DependsOn("rabbitConfig")
 @Configuration
 public class RabbitChannel {
-    @Value("${rabbitMq.host}")
-    private String host;
-    @Value("${rabbitMq.username}")
-    private String username;
-    @Value("${rabbitMq.password}")
-    private String password;
-    @Value("${rabbitMq.port}")
-    private int port;
-    @Value("${rabbitMq.vHost}")
-    private String vHost;
-    @Value("${rabbitMq.queue}")
-    public String QUEUE_NAME;
-    @Value("${rabbitMq.exchange}")
-    public String EXCHANGE_NAME;
-    @Value("${rabbitMq.route}")
-    public String ROUTING_KEY;
-
-    public static final boolean durable = true;//queue durable
-    /*
-    * 1. direct: a message goes to the queues whose binding key exactly matches the routing key of the message(不同的queue可以设置相同的routeKey)
-    * 2. topic: https://www.rabbitmq.com/tutorials/tutorial-five-java.html
-    * 3. headers
-    * 4. fanout: broadcasts all messages to all consumers
-    * */
-    public static final String EXCHANGE_TYPE = "direct";
-    public static final int prefetch = 1;//consumer accept only one unAck-ed message at a time
+    private final RabbitConfig rabbitConfig;
+    @Autowired
+    public RabbitChannel(RabbitConfig rabbitConfig) {
+        this.rabbitConfig = rabbitConfig;
+    }
 
     @DependsOn("connectionFactory")
     @Bean
@@ -46,21 +25,21 @@ public class RabbitChannel {
         //consumer 应该保持Connection和Channel资源不释放
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
-        channel.basicQos(prefetch);
-        channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
+        channel.queueDeclare(rabbitConfig.QUEUE_NAME, RabbitConfig.durable, false, false, null);
+        channel.basicQos(RabbitConfig.prefetch);
+        channel.exchangeDeclare(rabbitConfig.EXCHANGE_NAME, RabbitConfig.EXCHANGE_TYPE);
+        channel.queueBind(rabbitConfig.QUEUE_NAME, rabbitConfig.EXCHANGE_NAME, rabbitConfig.ROUTING_KEY);
         return channel;
     }
 
     @Bean
     public ConnectionFactory connectionFactory(){
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
-        factory.setUsername(username);
-        factory.setPassword(password);
-        factory.setPort(port);
-        factory.setVirtualHost(vHost);
+        factory.setHost(rabbitConfig.HOST);
+        factory.setUsername(rabbitConfig.USER_NAME);
+        factory.setPassword(rabbitConfig.PASSWORD);
+        factory.setPort(rabbitConfig.PORT);
+        factory.setVirtualHost(rabbitConfig.V_HOST);
         return factory;
     }
 }
