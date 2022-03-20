@@ -15,3 +15,4 @@ public class SpringTestX2Application {
 		SpringApplication.run(SpringTestX2Application.class, args);
 	}
 }
+
