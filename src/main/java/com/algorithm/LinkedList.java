@@ -1,5 +1,10 @@
 package com.algorithm;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LinkedList {
     public static ListNode ReverseList(ListNode head){
         ListNode newHead = null;
@@ -50,18 +55,50 @@ public class LinkedList {
         return dummyNode.next;
     }
 
-    public static void main(String[] args) {
-/*        ListNode head = new ListNode(1);
-        ListNode node = head;
-        for (int i=2; i<=5; i++){
-            node.next = new ListNode(i);
-            node = node.next;
-        }*/
-        ListNode head = new ListNode(3);
-        head.next = new ListNode(5);
 
-        head = reverseBetween(head, 1, 2);
-        print(head);
+    /*
+    inputString: k1=v1;k2=v2;k3=v3;k4=v41,v42
+    输出的Map有四个kv键值对（->之前为key，之后为value）
+    outputString: Map<k1->v1, k2->v2, k3->v3, k4->v41,v42>
+    */
+    public static int lastIndex2 = 0;
+
+    public static Map<String, String> extract(String inputString) {
+        Matcher matcherKey = Pattern.compile("(?<!\")(k\\d=)").matcher(inputString);
+
+        Map<String,String> map = new HashMap<>();
+        int index1 = 0;
+        while (matcherKey.find(index1)){
+            String key = matcherKey.group().replace("=","");
+            index1 = matcherKey.end();
+            int index2 = -1;
+            Matcher matcherTail;
+            if (inputString.charAt(index1) != '"'){
+                matcherTail = Pattern.compile(";|$").matcher(inputString);
+                if (matcherTail.find(index1) && inputString.charAt(index1) != ';'){
+                    index2 = matcherTail.end();
+                }
+            } else {
+                matcherTail = Pattern.compile("\"+$|\"+;").matcher(inputString);
+                int temp = index1;
+                while (matcherTail.find(temp)){
+                    index2 = matcherTail.end();
+                    temp = index2;
+                }
+            }
+
+            if (matcherKey.start() >= lastIndex2 && index2 != -1){
+                String value = inputString.substring(index1,index2).replaceAll("(;)|(\")","");
+                map.put(key, value);
+                lastIndex2 = index2;
+            }
+        }
+        return map;
+    }
+
+    public static void main(String[] args) {
+        Map<String,String> map = extract("v2;k3=v3;k4=\"\\\"k5=v5\\\";k6=v6\"");
+        map.forEach((k,v) -> System.out.println("key:"+ k+" value:"+v));
     }
 
     private static void print(ListNode head){
