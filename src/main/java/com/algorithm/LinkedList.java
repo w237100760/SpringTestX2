@@ -61,17 +61,17 @@ public class LinkedList {
     输出的Map有四个kv键值对（->之前为key，之后为value）
     outputString: Map<k1->v1, k2->v2, k3->v3, k4->v41,v42>
     */
-    public static int lastIndex2 = 0;
 
     public static Map<String, String> extract(String inputString) {
-        Matcher matcherKey = Pattern.compile("(?<!\")(k\\d=)").matcher(inputString);
-
         Map<String,String> map = new HashMap<>();
-        int index1 = 0;
+        int index1 = 0;//key 的结尾index
+        int lastIndex2 = 0;//上一次value的结尾index
+
+        Matcher matcherKey = Pattern.compile("(?<!\")(k\\d=)").matcher(inputString);//匹配前面没有"的k1=
         while (matcherKey.find(index1)){
             String key = matcherKey.group().replace("=","");
             index1 = matcherKey.end();
-            int index2 = -1;
+            int index2 = -1;//value 的结尾index
             Matcher matcherTail;
             if (inputString.charAt(index1) != '"'){
                 matcherTail = Pattern.compile(";|$").matcher(inputString);
@@ -80,13 +80,14 @@ public class LinkedList {
                 }
             } else {
                 matcherTail = Pattern.compile("\"+$|\"+;").matcher(inputString);
-                int temp = index1;
+                int temp = index1;//"+$ | "+; 找到valuede结尾
                 while (matcherTail.find(temp)){
                     index2 = matcherTail.end();
                     temp = index2;
                 }
             }
-
+            //key的起始位置>=上次value的末尾
+            //index2 != -1 --> 存在value
             if (matcherKey.start() >= lastIndex2 && index2 != -1){
                 String value = inputString.substring(index1,index2).replaceAll("(;)|(\")","");
                 map.put(key, value);
