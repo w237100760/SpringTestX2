@@ -26,14 +26,13 @@ public class Consumer implements InitializingBean {
 
             try {
                 //doWork
+
+                System.out.println(" ["+consumerTag+"] Done");
+                consumerChannel.basicAck(delivery.getEnvelope().getDeliveryTag(), RabbitConfig.multipleAck);
             } catch (Exception e){
                 e.printStackTrace();
                 consumerChannel.basicReject(delivery.getEnvelope().getDeliveryTag(), RabbitConfig.reQueue);
                 //TODO 加入死信队列
-            }
-            finally {
-                System.out.println(" ["+consumerTag+"] Done");
-                consumerChannel.basicAck(delivery.getEnvelope().getDeliveryTag(), RabbitConfig.multipleAck);
             }
         };
         consumerChannel.basicConsume(rabbitConfig.QUEUE_NAME, RabbitConfig.autoAck, deliverCallback, consumerTag -> { });
