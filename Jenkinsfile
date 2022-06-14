@@ -5,6 +5,7 @@ pipeline {
       steps {
         echo 'Building..'
         sh 'mvn clean package -Dmaven.test.skip=true'
+        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
       }
     }
 
